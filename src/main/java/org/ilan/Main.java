@@ -1,7 +1,7 @@
 package org.ilan;
 
 /**
- *
+ * calls all methods and classes, and prints their descriptions
  * @author Ilan Cohen
  */
 public class Main {
