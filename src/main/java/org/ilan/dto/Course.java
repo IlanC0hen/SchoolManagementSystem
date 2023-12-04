@@ -1,5 +1,8 @@
 package org.ilan.dto;
-
+import lombok.*;
+@Setter
+@Getter
+@EqualsAndHashCode
 /**
  * Identifies a course, and registers it
  * @author Ilan Cohen
@@ -22,16 +25,42 @@ public class Course {
         this.courseName = courseName;
         this.credit = credit;
         this.department = department;
-        this.teacher = teacher; // for later
-        this.students = students; // for later
-        this.studentNum = studentNum; // for later
+        this.students = new Student[MAX_STUDENT_NUM];
     }
 
     /**
      * appropriate format to identify the course
      * @return a string format
      */
-    public String toString(){
-        return null; // for later
+    @Override
+    public String toString() {
+        String str = "[";
+        for (Student student : students){
+            if (student != null){
+                str += student + " , ";
+            }
+        }
+        str += "]";
+        if (teacher != null){
+            return  "Course{" +
+                    "id='" + id + '\'' +
+                    ", department=" + department.getDepartmentName() +
+                    ", courseName='" + courseName + '\'' +
+                    ", credit=" + credit +
+                    ", teacher=" + teacher.getName() +
+                    ", students=" + str +
+                    ", studentNum=" + studentNum +
+                    '}';
+        } else {
+            return  "Course{" +
+                    "id='" + id + '\'' +
+                    ", department=" + department.getDepartmentName() +
+                    ", courseName='" + courseName + '\'' +
+                    ", credit=" + credit +
+                    ", teacher=" + teacher +
+                    ", students=" + str +
+                    ", studentNum=" + studentNum +
+                    '}';
+        }
     }
 }

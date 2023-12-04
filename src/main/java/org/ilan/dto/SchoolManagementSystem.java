@@ -11,9 +11,15 @@ public class SchoolManagementSystem {
     private Course[] courses;
     private Teacher[] teachers;
     private Student[] students;
+    private int studentCounter;
+    private int studentCounterCourse;
+    private int teacherCounter;
+    private int courseCounter;
+    private int departmentCounter;
 
     private static final int MAX_DEPARTMENT_NUMBER = 5;
     private static final int MAX_COURSE_NUMBER = 30;
+    private static final int MAX_COURSE_NUM_STUDENT = 5;
     private static final int MAX_TEACHER_NUMBER = 20;
     private static final int MAX_STUDENT_NUMBER = 200;
 
@@ -33,7 +39,13 @@ public class SchoolManagementSystem {
      * @param departmentId the department of the student
      */
     public void addStudent(String fName, String lName, String departmentId){
-
+        if (studentCounter < MAX_STUDENT_NUMBER){
+            students[studentCounter] = new Student(fName, lName, findDepartment(departmentId));
+            System.out.println("Successfully added student: " + students[studentCounter]);
+            studentCounter++;
+        } else {
+            System.out.println("Max students reached, add student failed");
+        }
     }
 
     /**
@@ -42,14 +54,26 @@ public class SchoolManagementSystem {
      * @return the student description
      */
     public Student findStudent(String studentId){
-        return null; // for later
+        try {
+            for (Student student : students){
+                if (studentId.equals(student.getId())){
+                    return student;
+                }
+            }
+        } catch (Exception e){
+            System.out.println("Error while searching for student.");
+        } return null;
     }
 
     /**
      * prints a student
      */
     public void printStudents(){
-
+        for (Student student : students) {
+            if (student != null) {
+                System.out.println(student);
+            }
+        }
     }
 
     /**
@@ -59,7 +83,13 @@ public class SchoolManagementSystem {
      * @param departmentId the department of the teacher
      */
     public void addTeacher(String fName, String lName, String departmentId){
-
+        if (teacherCounter < MAX_TEACHER_NUMBER){
+            teachers[teacherCounter] = new Teacher(fName, lName, findDepartment(departmentId));
+            System.out.println("Successfully added teacher: " + teachers[teacherCounter]);
+            teacherCounter++;
+        } else {
+            System.out.println("Max teachers reached, add teacher failed");
+        }
     }
 
     /**
@@ -68,7 +98,15 @@ public class SchoolManagementSystem {
      * @return the teachers description
      */
     public Teacher findTeacher(String teacherId){
-        return null; // for later
+        try {
+            for (Teacher teacher : teachers){
+                if (teacher.getId().equals(teacherId)){
+                    return teacher;
+                }
+            }
+        } catch (Exception e){
+            System.out.println("Error while searching for teacher.");
+        }return null;
     }
 
     /**
@@ -77,14 +115,33 @@ public class SchoolManagementSystem {
      * @param courseId the id of the course to change
      */
     public void modifyCourseTeacher(String teacherId, String courseId){
+        Course course = findCourse(courseId);
+        Teacher teacher = findTeacher(teacherId);
 
+        if (teacher != null && course != null){
+            course.setTeacher(teacher);
+            System.out.println(course + " teacher info updated successfully");
+        } else if (course == null && teacher != null){
+            System.out.printf("Cannot find any course match with courseId %s, modify teacher for course %s failed.\n",
+                    courseId, courseId);
+        } else if (teacher == null && course != null){
+            System.out.printf("Cannot find any teacher match with teacherId %s, modify teacher for course %s failed.\n",
+                    teacherId, courseId);
+        } else {
+            System.out.printf("Cannot find either the teacherId %s or the courseId %s, modify teacher %s for course %s" +
+                    " failed.\n", teacherId, courseId, teacherId, courseId );
+        }
     }
 
     /**
      * prints a teacher
      */
     public void printTeachers(){
-
+        for (Teacher teacher : teachers) {
+            if (teacher != null) {
+                System.out.println(teacher);
+            }
+        }
     }
 
     /**
@@ -94,7 +151,13 @@ public class SchoolManagementSystem {
      * @param departmentId the id of the department it is from
      */
     public void addCourse(String courseName, double credit, String departmentId){
-
+        if (courseCounter < MAX_COURSE_NUMBER){
+            courses[courseCounter] = new Course(courseName, credit, findDepartment(departmentId));
+            System.out.println("Successfully added course: " + courses[courseCounter]);
+            courseCounter++;
+        } else {
+            System.out.println("Max courses reached, add course failed");
+        }
     }
 
     /**
@@ -103,7 +166,15 @@ public class SchoolManagementSystem {
      * @return the course description
      */
     public Course findCourse(String courseId){
-        return null; // for later
+        try {
+            for (Course course : courses){
+                if (course.getId().equals(courseId)){
+                    return course;
+                }
+            }
+        } catch (Exception e){
+            System.out.println("Error while searching for course.");
+        }return null;
     }
 
     /**
@@ -112,7 +183,24 @@ public class SchoolManagementSystem {
      * @param courseId what course that student will register
      */
     public void registerCourse(String studentId, String courseId){
+        Student student = findStudent(studentId);
+        Course course = findCourse(courseId);
+        if (student != null && course != null){
+            if (student.getCourseNum() < MAX_COURSE_NUM_STUDENT){ // for later
+                studentCounterCourse++;
+            }
+        }
+    }
 
+    /**
+     * prints a course
+     */
+    public void printCourses(){
+        for (Course course : courses){
+            if (course != null){
+                System.out.println(course);
+            }
+        }
     }
 
     /**
@@ -120,7 +208,13 @@ public class SchoolManagementSystem {
      * @param departmentName name of the new department
      */
     public void addDepartment(String departmentName){
-
+        if (departmentCounter < MAX_DEPARTMENT_NUMBER){
+            departments[departmentCounter] = new Department(departmentName);
+            System.out.println("Successfully added department: " + departments[departmentCounter]);
+            departmentCounter++;
+        }else {
+            System.out.println("Max departments reached, add department failed.");
+        }
     }
 
     /**
@@ -129,13 +223,25 @@ public class SchoolManagementSystem {
      * @return the department description
      */
     public Department findDepartment(String departmentId){
-        return null; // for later
+        try {
+            for (Department department : departments){
+                if (departmentId.equals(department.getId())){
+                    return department;
+                }
+            }
+        } catch (Exception e){
+            System.out.println("Error while searching for department.");
+        }return null;
     }
 
     /**
      * prints a department
      */
     public void printDepartments(){
-
+        for (Department department : departments) {
+            if (department != null) {
+                System.out.println(department);
+            }
+        }
     }
 }

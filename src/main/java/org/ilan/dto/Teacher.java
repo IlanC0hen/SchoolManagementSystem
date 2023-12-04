@@ -1,5 +1,9 @@
 package org.ilan.dto;
-
+import lombok.*;
+@Setter
+@Getter
+@EqualsAndHashCode
+@ToString
 /**
  * Identifies a teacher, and registers them
  * @author Ilan Cohen
@@ -8,6 +12,7 @@ public class Teacher {
     private String id;
     private String fName;
     private String lName;
+    private String name;
     private Department department;
 
     private static int nextId = 1;
@@ -17,14 +22,7 @@ public class Teacher {
         this.id = String.format("T%03d", nextId++);
         this.fName = fName;
         this.lName = lName;
+        this.name = fName + " " + lName;
         this.department = department;
-    }
-
-    /**
-     * appropriate format to identify the teacher
-     * @return a string format
-     */
-    public String toString(){
-        return null; // for later
     }
 }

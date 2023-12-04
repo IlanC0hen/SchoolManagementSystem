@@ -1,4 +1,8 @@
 package org.ilan.dto;
+import lombok.*;
+@Setter
+@Getter
+@EqualsAndHashCode
 
 /**
  * Identifies a student, and registers them
@@ -20,6 +24,7 @@ public class Student {
         this.id = String.format("S%03d", nextId++);
         this.fName = fName;
         this.lName = lName;
+        this.courseNum = 0;
         this.courses = new Course[MAX_COURSE_NUM];
         this.department = department;
     }
@@ -28,7 +33,22 @@ public class Student {
      * appropriate format to identify the student
      * @return a string format
      */
-    public String toString(){
-        return null; // for later
+    @Override
+    public String toString() {
+        String courseStr = "[";
+        for (Course course : courses){
+            if (course != null){
+                courseStr += course + " , ";
+            }
+        }
+        courseStr += "]";
+        return "Student{" +
+                "id='" + id + '\'' +
+                ", fName='" + fName + '\'' +
+                ", lName='" + lName + '\'' +
+                ", courses=" + courseStr +
+                ", courseNum=" + courseNum +
+                ", department=" + department +
+                '}';
     }
 }

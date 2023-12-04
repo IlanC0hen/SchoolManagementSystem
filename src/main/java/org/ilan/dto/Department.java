@@ -1,5 +1,9 @@
 package org.ilan.dto;
-
+import lombok.*;
+@Setter
+@Getter
+@EqualsAndHashCode
+@ToString
 /**
  * Identifies a department, and registers it
  * @author Ilan Cohen
@@ -14,13 +18,5 @@ public class Department {
     public Department(String departmentName) {
         this.id = String.format("D%03d", nextId++);
         this.departmentName = departmentName;
-    }
-
-    /**
-     * appropriate format to identify the department
-     * @return a string format
-     */
-    public String toString(){
-        return null;
     }
 }
