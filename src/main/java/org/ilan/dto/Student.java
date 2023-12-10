@@ -1,5 +1,8 @@
 package org.ilan.dto;
 import lombok.*;
+
+import java.util.Arrays;
+
 @Setter
 @Getter
 @EqualsAndHashCode
@@ -12,6 +15,7 @@ public class Student {
     private String id;
     private String fName;
     private String lName;
+    private String name;
     private Course[] courses;
     private int courseNum;
     private Department department;
@@ -24,6 +28,7 @@ public class Student {
         this.id = String.format("S%03d", nextId++);
         this.fName = fName;
         this.lName = lName;
+        this.name = fName + " " + lName;
         this.courseNum = 0;
         this.courses = new Course[MAX_COURSE_NUM];
         this.department = department;
@@ -31,6 +36,7 @@ public class Student {
 
     /**
      * appropriate format to identify the student
+     *
      * @return a string format
      */
     @Override
@@ -38,7 +44,7 @@ public class Student {
         String courseStr = "[";
         for (Course course : courses){
             if (course != null){
-                courseStr += course + " , ";
+                courseStr += course.getCourseName() + " , ";
             }
         }
         courseStr += "]";
@@ -46,6 +52,7 @@ public class Student {
                 "id='" + id + '\'' +
                 ", fName='" + fName + '\'' +
                 ", lName='" + lName + '\'' +
+                ", name='" + name + '\'' +
                 ", courses=" + courseStr +
                 ", courseNum=" + courseNum +
                 ", department=" + department +

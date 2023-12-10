@@ -12,14 +12,14 @@ public class SchoolManagementSystem {
     private Teacher[] teachers;
     private Student[] students;
     private int studentCounter;
-    private int studentCounterCourse;
     private int teacherCounter;
     private int courseCounter;
     private int departmentCounter;
 
     private static final int MAX_DEPARTMENT_NUMBER = 5;
     private static final int MAX_COURSE_NUMBER = 30;
-    private static final int MAX_COURSE_NUM_STUDENT = 5;
+    private static final int MAX_COURSE_NUM_PER_STUDENT = 5;
+    private static final int MAX_STUDENT_NUM_PER_COURSE = 5;
     private static final int MAX_TEACHER_NUMBER = 20;
     private static final int MAX_STUDENT_NUMBER = 200;
 
@@ -44,7 +44,7 @@ public class SchoolManagementSystem {
             System.out.println("Successfully added student: " + students[studentCounter]);
             studentCounter++;
         } else {
-            System.out.println("Max students reached, add student failed");
+            System.out.println("Max students reached, add student failed.\n");
         }
     }
 
@@ -69,6 +69,7 @@ public class SchoolManagementSystem {
      * prints a student
      */
     public void printStudents(){
+        System.out.println("\nDisplaying all students\n----------------");
         for (Student student : students) {
             if (student != null) {
                 System.out.println(student);
@@ -88,7 +89,7 @@ public class SchoolManagementSystem {
             System.out.println("Successfully added teacher: " + teachers[teacherCounter]);
             teacherCounter++;
         } else {
-            System.out.println("Max teachers reached, add teacher failed");
+            System.out.println("Max teachers reached, add teacher failed.\n");
         }
     }
 
@@ -120,16 +121,16 @@ public class SchoolManagementSystem {
 
         if (teacher != null && course != null){
             course.setTeacher(teacher);
-            System.out.println(course + " teacher info updated successfully");
+            System.out.println("\n" + course + " teacher info updated successfully");
         } else if (course == null && teacher != null){
-            System.out.printf("Cannot find any course match with courseId %s, modify teacher for course %s failed.\n",
+            System.out.printf("\nCannot find any course match with courseId %s, modify teacher for course %s failed.",
                     courseId, courseId);
         } else if (teacher == null && course != null){
-            System.out.printf("Cannot find any teacher match with teacherId %s, modify teacher for course %s failed.\n",
+            System.out.printf("\nCannot find any teacher match with teacherId %s, modify teacher for course %s failed.",
                     teacherId, courseId);
         } else {
-            System.out.printf("Cannot find either the teacherId %s or the courseId %s, modify teacher %s for course %s" +
-                    " failed.\n", teacherId, courseId, teacherId, courseId );
+            System.out.printf("\nCannot find either the teacherId %s or the courseId %s, modify teacher %s for course %s" +
+                    " failed.", teacherId, courseId, teacherId, courseId );
         }
     }
 
@@ -137,6 +138,7 @@ public class SchoolManagementSystem {
      * prints a teacher
      */
     public void printTeachers(){
+        System.out.println("\nDisplaying all teachers\n----------------");
         for (Teacher teacher : teachers) {
             if (teacher != null) {
                 System.out.println(teacher);
@@ -156,7 +158,7 @@ public class SchoolManagementSystem {
             System.out.println("Successfully added course: " + courses[courseCounter]);
             courseCounter++;
         } else {
-            System.out.println("Max courses reached, add course failed");
+            System.out.println("Max courses reached, add course failed.\n");
         }
     }
 
@@ -183,19 +185,56 @@ public class SchoolManagementSystem {
      * @param courseId what course that student will register
      */
     public void registerCourse(String studentId, String courseId){
-        Student student = findStudent(studentId);
-        Course course = findCourse(courseId);
-        if (student != null && course != null){
-            if (student.getCourseNum() < MAX_COURSE_NUM_STUDENT){ // for later
-                studentCounterCourse++;
-            }
+           Student student = findStudent(studentId);
+           Course course = findCourse(courseId);
+           if (student == null && course != null){
+               System.out.printf("Cannot find any student match with student id %s, register course for student %s failed.\n"
+               , studentId, studentId);
+           } else if (course == null && student != null){
+               System.out.printf("Cannot find any course match with course id %s, register course for student %s failed.\n"
+               , courseId, studentId);
+           } else if (student != null && student.getCourseNum() >= MAX_COURSE_NUM_PER_STUDENT){
+               System.out.printf("Max amount of courses per student reached for student id %s, add course failed.\n",
+                       studentId);
+           } else if (course != null && course.getStudentNum() >= MAX_STUDENT_NUM_PER_COURSE ){
+               System.out.printf("Max amount of student per course reached for course id %s, add student failed.\n",
+                       courseId);
+           } else {
+               if (student != null && course != null){
+                   Student[] studentList = course.getStudents();
+                   Course[] courseList = student.getCourses();
+                   int courseCounterPerStudent = course.getStudentNum();
+                   int studentCounterPerCourse = student.getCourseNum();
+                   for (int i = 0; i < studentList.length; i++){
+                       if (studentList[i] == null){
+                           studentList[i] = student;
+                           courseCounterPerStudent++;
+                           course.setStudentNum(courseCounterPerStudent);
+                           break;
+                       }
+                   }
+                   for (int i = 0; i < courseList.length; i++){
+                       if (courseList[i] == null){
+                           courseList[i] = course;
+                           studentCounterPerCourse++;
+                           student.setCourseNum(studentCounterPerCourse);
+                           break;
+                       }
+                   }
+                   course.setStudents(studentList);
+                   student.setCourses(courseList);
+                   System.out.print("\nStudent register course successfully\nLatest student info: ");
+                   System.out.println(student);
+                   System.out.print("Latest course info: ");
+                   System.out.println(course);
+               }
+           }
         }
-    }
-
     /**
      * prints a course
      */
     public void printCourses(){
+        System.out.println("\nDisplaying all courses\n----------------");
         for (Course course : courses){
             if (course != null){
                 System.out.println(course);
@@ -213,7 +252,7 @@ public class SchoolManagementSystem {
             System.out.println("Successfully added department: " + departments[departmentCounter]);
             departmentCounter++;
         }else {
-            System.out.println("Max departments reached, add department failed.");
+            System.out.println("Max departments reached, add department failed.\n");
         }
     }
 
@@ -238,6 +277,7 @@ public class SchoolManagementSystem {
      * prints a department
      */
     public void printDepartments(){
+        System.out.println("\nDisplaying all departments\n----------------");
         for (Department department : departments) {
             if (department != null) {
                 System.out.println(department);
