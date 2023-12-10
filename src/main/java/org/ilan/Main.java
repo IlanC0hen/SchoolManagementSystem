@@ -17,7 +17,9 @@ public class Main {
         school.addStudent("Ilan", "Cohen","D001" );
         school.addStudent("Shai", "Amzallag","D001" );
 
-        school.modifyCourseTeacher("T001", "C001");
+        school.findStudent("S004");
+
+        school.modifyCourseTeacher("T002", "C001");
         school.registerCourse("S001", "C001");
         school.registerCourse("S002", "C001");
 

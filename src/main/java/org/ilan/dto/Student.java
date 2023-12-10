@@ -44,7 +44,7 @@ public class Student {
         String courseStr = "[";
         for (Course course : courses){
             if (course != null){
-                courseStr += course.getCourseName() + " , ";
+                courseStr += course.getCourseName() + ", ";
             }
         }
         courseStr += "]";

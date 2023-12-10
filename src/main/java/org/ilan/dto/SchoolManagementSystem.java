@@ -61,7 +61,7 @@ public class SchoolManagementSystem {
                 }
             }
         } catch (Exception e){
-            System.out.println("Error while searching for student.");
+            System.out.println("\nError while searching for student.");
         } return null;
     }
 
@@ -106,7 +106,7 @@ public class SchoolManagementSystem {
                 }
             }
         } catch (Exception e){
-            System.out.println("Error while searching for teacher.");
+            System.out.println("\nError while searching for teacher.");
         }return null;
     }
 
@@ -121,16 +121,16 @@ public class SchoolManagementSystem {
 
         if (teacher != null && course != null){
             course.setTeacher(teacher);
-            System.out.println("\n" + course + " teacher info updated successfully");
+            System.out.println("\n" + course + " teacher info updated successfully.");
         } else if (course == null && teacher != null){
-            System.out.printf("\nCannot find any course match with courseId %s, modify teacher for course %s failed.",
+            System.out.printf("\nCannot find any course match with courseId %s, modify teacher for course %s failed.\n",
                     courseId, courseId);
         } else if (teacher == null && course != null){
-            System.out.printf("\nCannot find any teacher match with teacherId %s, modify teacher for course %s failed.",
+            System.out.printf("\nCannot find any teacher match with teacherId %s, modify teacher for course %s failed.\n",
                     teacherId, courseId);
         } else {
             System.out.printf("\nCannot find either the teacherId %s or the courseId %s, modify teacher %s for course %s" +
-                    " failed.", teacherId, courseId, teacherId, courseId );
+                    " failed.\n", teacherId, courseId, teacherId, courseId );
         }
     }
 
@@ -175,7 +175,7 @@ public class SchoolManagementSystem {
                 }
             }
         } catch (Exception e){
-            System.out.println("Error while searching for course.");
+            System.out.println("\nError while searching for course.");
         }return null;
     }
 
@@ -269,7 +269,7 @@ public class SchoolManagementSystem {
                 }
             }
         } catch (Exception e){
-            System.out.println("Error while searching for department.");
+            System.out.println("\nError while searching for department.");
         }return null;
     }
 
